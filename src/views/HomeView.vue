@@ -32,21 +32,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 //Data
 const todoList = ref([]);
 const todoListObj = ref({
+  id: "",
   text: "",
   from: "",
   to: "",
   createdDate: "",
 });
 //method
+
+//Push data
 const pushData = () => {
+  todoListObj.value.id = todoList.value.length + 1;
   todoListObj.value.createdDate = new Date();
   todoList.value.push(todoListObj.value);
+  addLocalSt();
   todoListObj.value = {
+    id: "",
     text: "",
     from: "",
     to: "",
@@ -54,6 +60,20 @@ const pushData = () => {
   };
   console.log(todoList.value);
 };
+
+//set a local storage
+const addLocalSt = () => {
+  localStorage.setItem("todolists", JSON.stringify(todoList.value));
+};
+
+//update localstorage
+const updateLocalSt = () => {
+  if (localStorage.getItem("todoLists")) {
+    todoList.value = JSON.parse(localStorage.getItem("todolists"));
+  }
+};
+
+onMounted(() => updateLocalSt());
 </script>
 
 <style lang="scss">
