@@ -32,16 +32,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+import mixins from "@/mixins/todos";
+
+const { todoList, addLocalSt } = mixins();
 
 //Data
-const todoList = ref([]);
 const todoListObj = ref({
   id: "",
   text: "",
   from: "",
   to: "",
   createdDate: "",
+  isComplate: false,
 });
 //method
 
@@ -60,20 +63,6 @@ const pushData = () => {
   };
   console.log(todoList.value);
 };
-
-//set a local storage
-const addLocalSt = () => {
-  localStorage.setItem("todolists", JSON.stringify(todoList.value));
-};
-
-//update localstorage
-const updateLocalSt = () => {
-  if (localStorage.getItem("todoLists")) {
-    todoList.value = JSON.parse(localStorage.getItem("todolists"));
-  }
-};
-
-onMounted(() => updateLocalSt());
 </script>
 
 <style lang="scss">
